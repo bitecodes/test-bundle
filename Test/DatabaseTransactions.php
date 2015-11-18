@@ -9,9 +9,9 @@ trait DatabaseTransactions
      */
     public static function clearDatabase()
     {
-        self::runCmd('doctrine:schema:drop --force --env=test');
-        self::runCmd('doctrine:schema:create --env=test');
-        self::runCmd('doctrine:schema:update --force --env=test');
+        self::runCommand('doctrine:schema:drop --force --env=test');
+        self::runCommand('doctrine:schema:create --env=test');
+        self::runCommand('doctrine:schema:update --force --env=test');
     }
 
     /**
@@ -19,7 +19,7 @@ trait DatabaseTransactions
      */
     public function startTransaction()
     {
-        $this->getContainer()->get('doctrine')->getManager()->beginTransaction();
+        $this->client->getContainer()->get('doctrine')->getManager()->beginTransaction();
     }
 
     /**
@@ -27,7 +27,7 @@ trait DatabaseTransactions
      */
     public function rollback()
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->client->getContainer()->get('doctrine')->getManager();
         $em->rollback();
         $em->close();
     }
