@@ -3,9 +3,9 @@
 namespace Fludio\TestBundle\Test;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -156,7 +156,7 @@ class TestCase extends WebTestCase
         return false;
     }
 
-    protected static function runCommand($command)
+    protected static function runCmd($command)
     {
         $client = self::createClient();
         $kernel = $client->getKernel();
@@ -165,8 +165,6 @@ class TestCase extends WebTestCase
         $app->setAutoExit(false);
 
         $fp = tmpfile();
-
-        // TODO remove StringInput
         $input = new StringInput($command);
         $output = new StreamOutput($fp);
 

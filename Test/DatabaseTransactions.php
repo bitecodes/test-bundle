@@ -4,30 +4,24 @@ namespace Fludio\TestBundle\Test;
 
 trait DatabaseTransactions
 {
-    /**
-     * @beforeClass
-     */
+    /** @beforeClass */
     public static function clearDatabase()
     {
-        self::runCommand('doctrine:schema:drop --force --env=test');
-        self::runCommand('doctrine:schema:create --env=test');
-        self::runCommand('doctrine:schema:update --force --env=test');
+        self::runCmd('doctrine:database:drop --force --env=test');
+        self::runCmd('doctrine:database:create --env=test');
+        self::runCmd('doctrine:schema:create --env=test');
     }
 
-    /**
-     * @before
-     */
+    /** @before */
     public function startTransaction()
     {
-        $this->client->getContainer()->get('doctrine')->getManager()->beginTransaction();
+        $this->getContainer()->get('doctrine')->getManager()->beginTransaction();
     }
 
-    /**
-     * @after
-     */
+    /** @after */
     public function rollback()
     {
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $em->rollback();
         $em->close();
     }
