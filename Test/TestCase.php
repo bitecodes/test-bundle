@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TestCase extends WebTestCase
@@ -21,7 +20,10 @@ class TestCase extends WebTestCase
      * @var EntityManager
      */
     public $em;
-
+    /**
+     * @var Application
+     */
+    protected static $application;
     /**
      * @var Factory
      */
@@ -158,32 +160,20 @@ class TestCase extends WebTestCase
 
     protected static function runCmd($command)
     {
-        $client = self::createClient();
-        $kernel = $client->getKernel();
+        $command = sprintf('%s --quiet', $command);
 
-        $app = new Application($kernel);
-        $app->setAutoExit(false);
+        return self::getApplication()->run(new StringInput($command));
+    }
 
-        $fp = tmpfile();
-        $input = new StringInput($command);
-        $output = new StreamOutput($fp);
+    protected static function getApplication()
+    {
+        if (null === self::$application) {
+            $client = static::createClient();
 
-        $app->run($input, $output);
-
-        fseek($fp, 0);
-        $output = '';
-        while (!feof($fp)) {
-            $output = fread($fp, 4096);
-        }
-        fclose($fp);
-
-        if (strpos(strtolower($output), 'exception') !== false) {
-            throw new \PHPUnit_Framework_AssertionFailedError($output);
+            self::$application = new Application($client->getKernel());
+            self::$application->setAutoExit(false);
         }
 
-        $client->getContainer()->get('doctrine')->getManager()->close();
-        $kernel->shutdown();
-
-        return $output;
+        return self::$application;
     }
 }
