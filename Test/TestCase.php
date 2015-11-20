@@ -2,8 +2,8 @@
 
 namespace Fludio\TestBundle\Test;
 
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\StringInput;
