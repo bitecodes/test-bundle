@@ -37,7 +37,7 @@ class TestCase extends WebTestCase
         self::runCmd('doctrine:schema:create --env=test');
 
         $this->client  = static::createClient();
-        $this->factory = $this->client->getContainer()->get('fludio_factory.factory');
+        $this->factory = $this->client->getContainer()->get('factrine');
         $this->em      = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
