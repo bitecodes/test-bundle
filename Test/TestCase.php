@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TestCase extends WebTestCase
@@ -31,6 +32,10 @@ class TestCase extends WebTestCase
 
     public function setUp()
     {
+        self::runCmd('doctrine:database:drop --force --env=test');
+        self::runCmd('doctrine:database:create --env=test');
+        self::runCmd('doctrine:schema:create --env=test');
+
         $this->client  = static::createClient();
         $this->factory = $this->client->getContainer()->get('fludio_factory.factory');
         $this->em      = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -108,7 +113,9 @@ class TestCase extends WebTestCase
 
         $jsonData = json_decode($content, true);
 
-        $this->assertTrue($this->has(key($data), $data[key($data)], $jsonData));
+        $message = sprintf("Could not verify that json contains %s", json_encode($data));
+
+        $this->assertTrue($this->has(key($data), $data[key($data)], $jsonData), $message);
 
         return $this;
     }
@@ -167,9 +174,33 @@ class TestCase extends WebTestCase
 
     protected static function runCmd($command)
     {
-        $command = sprintf('%s --quiet', $command);
+        $client = self::createClient();
+        $kernel = $client->getKernel();
 
-        return self::getApplication()->run(new StringInput($command));
+        $app = new Application($kernel);
+        $app->setAutoExit(false);
+
+        $fp = tmpfile();
+        $input = new StringInput($command);
+        $output = new StreamOutput($fp);
+
+        $app->run($input, $output);
+
+        fseek($fp, 0);
+        $output = '';
+        while (!feof($fp)) {
+            $output = fread($fp, 4096);
+        }
+        fclose($fp);
+
+        if (strpos(strtolower($output), 'exception') !== false) {
+            throw new \PHPUnit_Framework_AssertionFailedError($output);
+        }
+
+        $client->getContainer()->get('doctrine')->getManager()->close();
+        $kernel->shutdown();
+
+        return $output;
     }
 
     protected static function getApplication()
