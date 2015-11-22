@@ -50,6 +50,13 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    public function patch($uri, $data = [], $headers = [])
+    {
+        $this->client->request('PATCH', $uri, $data, [], $headers);
+
+        return $this;
+    }
+
     public function delete($uri, $data = [], $headers = [])
     {
         $this->client->request('DELETE', $uri, $data, [], $headers);
