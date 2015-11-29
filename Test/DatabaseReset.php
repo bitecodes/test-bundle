@@ -11,14 +11,8 @@ trait DatabaseReset
      */
     public function resetDatabase()
     {
-        $purger = new ORMPurger($this->em);
-        $connection = $this->em->getConnection();
-
-        try {
-            $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
-            $purger->purge();
-        } finally {
-            $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
-        }
+        self::runCmd('doctrine:database:drop --force --env=test');
+        self::runCmd('doctrine:database:create --env=test');
+        self::runCmd('doctrine:schema:create --env=test');
     }
 }
