@@ -32,10 +32,6 @@ class TestCase extends WebTestCase
 
     public function setUp()
     {
-        self::runCmd('doctrine:database:drop --force --env=test');
-        self::runCmd('doctrine:database:create --env=test');
-        self::runCmd('doctrine:schema:create --env=test');
-
         $this->client  = static::createClient();
         $this->factory = $this->client->getContainer()->get('factrine');
         $this->em      = $this->client->getContainer()->get('doctrine.orm.entity_manager');
@@ -71,7 +67,7 @@ class TestCase extends WebTestCase
 
     public function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->client->getContainer()->get('router')->generate($route, $parameters, $referenceType);
+        return $this->getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
 
     public function seeStatusCode($code)
