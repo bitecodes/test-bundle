@@ -32,9 +32,9 @@ class TestCase extends WebTestCase
 
     public function setUp()
     {
-        $this->client  = static::createClient();
+        $this->client = static::createClient();
         $this->factory = $this->client->getContainer()->get('factrine');
-        $this->em      = $this->client->getContainer()->get('doctrine.orm.entity_manager');
+        $this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     public function get($uri, $headers = [])
@@ -54,6 +54,13 @@ class TestCase extends WebTestCase
     public function patch($uri, $data = [], $headers = [])
     {
         $this->client->request('PATCH', $uri, $data, [], $headers);
+
+        return $this;
+    }
+
+    public function put($uri, $data = [], $headers = [])
+    {
+        $this->client->request('PUT', $uri, $data, [], $headers);
 
         return $this;
     }
@@ -94,7 +101,7 @@ class TestCase extends WebTestCase
 
         $dataKeyArray = explode('.', $dataKey);
 
-        foreach($dataKeyArray as $key) {
+        foreach ($dataKeyArray as $key) {
             $data = $data[$key];
         }
 
@@ -145,7 +152,7 @@ class TestCase extends WebTestCase
             ->select('COUNT(e)')
             ->from($entity, 'e');
 
-        foreach($criteria as $field => $value) {
+        foreach ($criteria as $field => $value) {
             $qb->andWhere("e.{$field} = :{$field}")->setParameter($field, $value);
         }
 
@@ -155,11 +162,11 @@ class TestCase extends WebTestCase
 
     private function has($key, $value, $data)
     {
-        foreach($data as $k => $v) {
-            if($k == $key && $v == $value) {
+        foreach ($data as $k => $v) {
+            if ($k == $key && $v == $value) {
                 return true;
-            } elseif(is_array($v)) {
-                if($this->has($key, $value, $v)) {
+            } elseif (is_array($v)) {
+                if ($this->has($key, $value, $v)) {
                     return true;
                 }
             }
