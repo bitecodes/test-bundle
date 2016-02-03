@@ -37,6 +37,11 @@ class TestCase extends WebTestCase
         $this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
+    /**
+     * @param $uri
+     * @param array $headers
+     * @return $this
+     */
     public function get($uri, $headers = [])
     {
         $this->client->request('GET', $uri, [], [], $headers);
@@ -44,6 +49,12 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $uri
+     * @param array $data
+     * @param array $headers
+     * @return $this
+     */
     public function post($uri, $data = [], $headers = [])
     {
         $this->client->request('POST', $uri, $data, [], $headers);
@@ -51,6 +62,12 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $uri
+     * @param array $data
+     * @param array $headers
+     * @return $this
+     */
     public function patch($uri, $data = [], $headers = [])
     {
         $this->client->request('PATCH', $uri, $data, [], $headers);
@@ -58,6 +75,12 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $uri
+     * @param array $data
+     * @param array $headers
+     * @return $this
+     */
     public function put($uri, $data = [], $headers = [])
     {
         $this->client->request('PUT', $uri, $data, [], $headers);
@@ -65,6 +88,12 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $uri
+     * @param array $data
+     * @param array $headers
+     * @return $this
+     */
     public function delete($uri, $data = [], $headers = [])
     {
         $this->client->request('DELETE', $uri, $data, [], $headers);
@@ -72,11 +101,21 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $route
+     * @param array $parameters
+     * @param bool $referenceType
+     * @return string
+     */
     public function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
 
+    /**
+     * @param $code
+     * @return $this
+     */
     public function seeStatusCode($code)
     {
         $this->assertEquals($code, $this->client->getResponse()->getStatusCode());
@@ -84,6 +123,9 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function seeJsonResponse()
     {
         $response = $this->client->getResponse();
@@ -93,6 +135,11 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $dataKey
+     * @param int $count
+     * @return $this
+     */
     public function seeJsonHas($dataKey, $count = 1)
     {
         $content = $this->client->getResponse()->getContent();
@@ -110,7 +157,11 @@ class TestCase extends WebTestCase
         return $this;
     }
 
-    public function seeJsonContains($data, $count = 1)
+    /**
+     * @param $data
+     * @return $this
+     */
+    public function seeInJson($data)
     {
         $content = $this->client->getResponse()->getContent();
 
@@ -123,6 +174,28 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $data
+     * @return $this
+     */
+    public function seeNotInJson($data)
+    {
+        $content = $this->client->getResponse()->getContent();
+
+        $jsonData = json_decode($content, true);
+
+        $message = sprintf("Json contains %s", json_encode($data));
+
+        $this->assertTrue(!$this->has(key($data), $data[key($data)], $jsonData), $message);
+
+        return $this;
+    }
+
+    /**
+     * @param $entity
+     * @param $criteria
+     * @return $this
+     */
     public function seeInDatabase($entity, $criteria)
     {
         $count = $this->getDatabaseResult($entity, $criteria);
@@ -134,6 +207,11 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $entity
+     * @param $criteria
+     * @return $this
+     */
     public function seeNotInDatabase($entity, $criteria)
     {
         $count = $this->getDatabaseResult($entity, $criteria);
@@ -145,6 +223,11 @@ class TestCase extends WebTestCase
         return $this;
     }
 
+    /**
+     * @param $entity
+     * @param $criteria
+     * @return mixed
+     */
     protected function getDatabaseResult($entity, $criteria)
     {
         $qb = $this->em
@@ -160,6 +243,12 @@ class TestCase extends WebTestCase
     }
 
 
+    /**
+     * @param $key
+     * @param $value
+     * @param $data
+     * @return bool
+     */
     private function has($key, $value, $data)
     {
         foreach ($data as $k => $v) {
@@ -175,6 +264,11 @@ class TestCase extends WebTestCase
         return false;
     }
 
+    /**
+     * @param $command
+     * @return string|StreamOutput
+     * @throws \Exception
+     */
     protected static function runCmd($command)
     {
         $client = self::createClient();
@@ -206,6 +300,9 @@ class TestCase extends WebTestCase
         return $output;
     }
 
+    /**
+     * @return Application
+     */
     protected static function getApplication()
     {
         if (null === self::$application) {
