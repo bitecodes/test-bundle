@@ -40,7 +40,7 @@ class TestCase extends WebTestCase
     /**
      * @param $uri
      * @param array $headers
-     * @return $this
+     * @return TestCase
      */
     public function get($uri, $headers = [])
     {
@@ -53,7 +53,7 @@ class TestCase extends WebTestCase
      * @param $uri
      * @param array $data
      * @param array $headers
-     * @return $this
+     * @return TestCase
      */
     public function post($uri, $data = [], $headers = [])
     {
@@ -66,7 +66,7 @@ class TestCase extends WebTestCase
      * @param $uri
      * @param array $data
      * @param array $headers
-     * @return $this
+     * @return TestCase
      */
     public function patch($uri, $data = [], $headers = [])
     {
@@ -79,7 +79,7 @@ class TestCase extends WebTestCase
      * @param $uri
      * @param array $data
      * @param array $headers
-     * @return $this
+     * @return TestCase
      */
     public function put($uri, $data = [], $headers = [])
     {
@@ -92,7 +92,7 @@ class TestCase extends WebTestCase
      * @param $uri
      * @param array $data
      * @param array $headers
-     * @return $this
+     * @return TestCase
      */
     public function delete($uri, $data = [], $headers = [])
     {
@@ -114,7 +114,7 @@ class TestCase extends WebTestCase
 
     /**
      * @param $code
-     * @return $this
+     * @return TestCase
      */
     public function seeStatusCode($code)
     {
@@ -124,7 +124,7 @@ class TestCase extends WebTestCase
     }
 
     /**
-     * @return $this
+     * @return TestCase
      */
     public function seeJsonResponse()
     {
@@ -138,7 +138,7 @@ class TestCase extends WebTestCase
     /**
      * @param $dataKey
      * @param int $count
-     * @return $this
+     * @return TestCase
      */
     public function seeJsonHas($dataKey, $count = 1)
     {
@@ -159,7 +159,7 @@ class TestCase extends WebTestCase
 
     /**
      * @param $data
-     * @return $this
+     * @return TestCase
      */
     public function seeInJson($data)
     {
@@ -176,7 +176,7 @@ class TestCase extends WebTestCase
 
     /**
      * @param $data
-     * @return $this
+     * @return TestCase
      */
     public function seeNotInJson($data)
     {
@@ -194,7 +194,7 @@ class TestCase extends WebTestCase
     /**
      * @param $entity
      * @param $criteria
-     * @return $this
+     * @return TestCase
      */
     public function seeInDatabase($entity, $criteria)
     {
@@ -210,7 +210,7 @@ class TestCase extends WebTestCase
     /**
      * @param $entity
      * @param $criteria
-     * @return $this
+     * @return TestCase
      */
     public function seeNotInDatabase($entity, $criteria)
     {
