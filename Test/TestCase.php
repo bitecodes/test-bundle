@@ -109,7 +109,7 @@ class TestCase extends WebTestCase
      */
     public function json($method, $uri, $content)
     {
-        $this->client->request($method, $uri, [], [], [], $content);
+        $this->client->request($method, $uri, [], [], ['CONTENT_TYPE' => 'application/json'], $content);
 
         return $this;
     }
