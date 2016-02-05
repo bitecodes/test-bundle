@@ -115,6 +115,16 @@ class TestCase extends WebTestCase
     }
 
     /**
+     * @return TestCase
+     */
+    public function debug()
+    {
+        var_dump($this->client->getResponse());
+
+        return $this;
+    }
+
+    /**
      * @param $route
      * @param array $parameters
      * @param bool $referenceType
