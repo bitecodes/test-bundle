@@ -102,6 +102,19 @@ class TestCase extends WebTestCase
     }
 
     /**
+     * @param $method
+     * @param $uri
+     * @param $content
+     * @return TestCase
+     */
+    public function json($method, $uri, $content)
+    {
+        $this->client->request($method, $uri, [], [], [], $content);
+
+        return $this;
+    }
+
+    /**
      * @param $route
      * @param array $parameters
      * @param bool $referenceType
