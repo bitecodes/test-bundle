@@ -2,7 +2,8 @@
 
 namespace Fludio\TestBundle\Test;
 
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\SchemaTool;
 
 trait DatabaseReset
 {
@@ -11,8 +12,16 @@ trait DatabaseReset
      */
     public function resetDatabase()
     {
-        self::runCmd('doctrine:database:drop --force --env=test');
-        self::runCmd('doctrine:database:create --env=test');
-        self::runCmd('doctrine:schema:create --env=test');
+        if (!property_exists($this, 'em')) {
+            throw new \Exception('No \'em\' property exists for this test case.');
+        }
+
+        if (!$this->em instanceof EntityManager) {
+            throw new \Exception('The \'em\' property needs to be an entity manager');
+        }
+
+        $schema = new SchemaTool($this->em);
+        $schema->dropDatabase();
+        $schema->createSchema($this->em->getMetadataFactory()->getAllMetadata());
     }
 }
