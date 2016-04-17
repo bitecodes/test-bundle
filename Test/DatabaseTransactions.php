@@ -1,6 +1,6 @@
 <?php
 
-namespace Fludio\TestBundle\Test;
+namespace BiteCodes\TestBundle\Test;
 
 trait DatabaseTransactions
 {
