@@ -1,34 +1,34 @@
 {
-    "name": "fludio/test-bundle",
-    "description": "Test Helper for Symfony",
-    "type": "symfony-bundle",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Thomas Uhlmann",
-            "email": "tho.uhlmann@gmail.com"
-        }
-    ],
-    "require": {
-        "symfony/console": ">=2.6",
-        "symfony/routing": ">=2.6",
-        "symfony/framework-bundle": ">=2.6",
-        "fludio/factrine-bundle": "0.7.*",
-        "liip/functional-test-bundle": "^1.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "4.*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Fludio\\TestBundle\\": ""
-        }
-    },
-    "target-dir": "Fludio/TestBundle",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/fludio/doctrine-entity-factory.git"
-        }
-    ]
+  "name": "bitecodes/test-bundle",
+  "description": "Test Helper for Symfony",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Uhlmann",
+      "email": "tho.uhlmann@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/console": ">=2.6",
+    "symfony/routing": ">=2.6",
+    "symfony/framework-bundle": ">=2.6",
+    "bitecodes/factrine-bundle": "0.7.*",
+    "liip/functional-test-bundle": "^1.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "BiteCodes\\TestBundle\\": ""
+    }
+  },
+  "target-dir": "BiteCodes/TestBundle",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/bitecodes/doctrine-entity-factory.git"
+    }
+  ]
 }
