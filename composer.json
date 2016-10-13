@@ -10,9 +10,9 @@
     }
   ],
   "require": {
-    "symfony/console": ">=2.6",
-    "symfony/routing": ">=2.6",
-    "symfony/framework-bundle": ">=2.6",
+    "symfony/console": "^2.6|^3.0",
+    "symfony/routing": "^2.6|^3.0",
+    "symfony/framework-bundle": ">=2.6|^3.0",
     "bitecodes/factrine-bundle": "0.8.*",
     "liip/functional-test-bundle": "^1.2"
   },
