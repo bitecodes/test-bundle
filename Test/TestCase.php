@@ -260,7 +260,7 @@ class TestCase extends WebTestCase
             ->from($entity, 'e');
 
         foreach ($criteria as $field => $value) {
-            $san = preg_replace('/[^A-Za-z]/', '', $field);
+            $san = preg_replace('/[^A-Za-z0-9]/', '', $field);
 
             if (is_null($value)) {
                 $qb->andWhere("e.{$field} IS NULL");
