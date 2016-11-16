@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use BiteCodes\FactrineBundle\Factory\Factory;
 
 class TestCase extends WebTestCase
 {
@@ -130,7 +131,7 @@ class TestCase extends WebTestCase
      * @param bool $referenceType
      * @return string
      */
-    public function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->getContainer()->get('router')->generate($route, $parameters, $referenceType);
     }
@@ -259,7 +260,14 @@ class TestCase extends WebTestCase
             ->from($entity, 'e');
 
         foreach ($criteria as $field => $value) {
-            $qb->andWhere("e.{$field} = :{$field}")->setParameter($field, $value);
+            $san = preg_replace('/[^A-Za-z]/', '', $field);
+
+            if (is_null($value)) {
+                $qb->andWhere("e.{$field} IS NULL");
+            } else {
+                $qb->andWhere("e.{$field} = :{$san}")->setParameter($san, $value);
+            }
+
         }
 
         return $qb->getQuery()->getSingleScalarResult();
